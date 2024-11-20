@@ -1,23 +1,70 @@
 import os
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, session
 from dotenv import load_dotenv
-from groq import Groq
+from langchain_core.messages import HumanMessage, AIMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain.chains import LLMChain
+from langchain_groq import ChatGroq
+from langchain.callbacks import StreamingStdOutCallbackHandler
+from langchain.memory import ConversationBufferMemory
+from typing import Dict
+import uuid
+from langsmith import Client
+from langchain.callbacks.tracers import LangChainTracer
+from langchain.callbacks.manager import CallbackManager
 
-# Muat environment variables dari file .env
+# Load environment variables
 load_dotenv()
 
-# Debugging: Pastikan environment variable berhasil dimuat
-print("GROQ_API_KEY:", os.getenv("GROQ_API_KEY"))
-
+# Initialize Flask app
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
 
-# Inisialisasi API Client Groq
-client = Groq(
-    api_key=os.getenv("GROQ_API_KEY")  # Ambil API key dari environment variable
+# Initialize Langsmith client and tracer
+client = Client()
+tracer = LangChainTracer(project_name=os.getenv("LANGSMITH_PROJECT", "my-chat-project"))
+
+# Setup callback manager
+callback_manager = CallbackManager([StreamingStdOutCallbackHandler(), tracer])
+
+# Dictionary untuk menyimpan memory untuk setiap session
+conversation_memories: Dict[str, ConversationBufferMemory] = {}
+
+# Initialize Groq LLM with LangChain
+llm = ChatGroq(
+    groq_api_key=os.getenv("GROQ_API_KEY"),
+    model_name="llama3-8b-8192",
+    streaming=True,
+    callback_manager=callback_manager
 )
 
+def get_or_create_memory(session_id: str) -> ConversationBufferMemory:
+    """Get or create memory for a session."""
+    if session_id not in conversation_memories:
+        conversation_memories[session_id] = ConversationBufferMemory(
+            memory_key="chat_history",
+            return_messages=True
+        )
+    return conversation_memories[session_id]
+
+def create_chain(template: str, memory: ConversationBufferMemory) -> LLMChain:
+    """Create a LangChain chain with memory."""
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", "Anda adalah asisten yang membantu dengan percakapan ini. Gunakan riwayat chat untuk memberikan respons yang kontekstual."),
+        MessagesPlaceholder(variable_name="chat_history"),
+        ("human", "{input}")
+    ])
+    
+    return LLMChain(
+        llm=llm,
+        prompt=prompt,
+        memory=memory,
+        verbose=True,
+        callback_manager=callback_manager
+    )
+
 def load_prompt():
-    """Load prompt dari prompts.txt."""
+    """Load prompt template from prompts.txt."""
     try:
         with open("prompts.txt", "r") as file:
             return file.read().strip()
@@ -27,50 +74,89 @@ def load_prompt():
 
 @app.route('/')
 def index():
-    """Render halaman utama."""
+    """Render the main page and initialize session."""
+    if 'session_id' not in session:
+        session['session_id'] = str(uuid.uuid4())
     return render_template('index.html')
 
 @app.route('/generate', methods=['POST'])
 def generate():
-    # Ambil prompt dari request atau file prompts.txt
-    data = request.json
-    prompt = data.get("prompt", "") or load_prompt()
-
-    if not prompt:
-        return jsonify({"error": "Prompt tidak boleh kosong"}), 400
-
     try:
-        # Log prompt untuk debugging
-        print(f"Prompt: {prompt}")
+        # Get session ID or create new one
+        session_id = session.get('session_id', str(uuid.uuid4()))
+        
+        # Get or create memory for this session
+        memory = get_or_create_memory(session_id)
+        
+        # Get prompt from request or file
+        data = request.json
+        prompt_text = data.get("prompt", "") or load_prompt()
 
-        # Permintaan ke Groq API
-        chat_completion = client.chat.completions.create(
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt,
-                }
-            ],
-            model="llama3-8b-8192",  # Ganti dengan model yang valid jika perlu
-        )
+        if not prompt_text:
+            return jsonify({"error": "Prompt tidak boleh kosong"}), 400
 
-        # Ambil hasil dari API
-        generated_text = chat_completion.choices[0].message.content
-        print(f"Generated Text: {generated_text}")  # Log untuk debugging
+        # Create chain with memory and execute
+        chain = create_chain(prompt_text, memory)
+        result = chain.invoke({"input": prompt_text})
+        
+        # Log the result for debugging
+        print(f"Generated Text: {result['text']}")
 
-        # Membagi output menjadi 8 bagian
-        sections = generated_text.split("\n")[:8]
-        structured_output = {f"Section {i+1}": section.strip() for i, section in enumerate(sections)}
+        # Split current response into sections
+        sections = result['text'].split("\n")[:8]
+        structured_output = {
+            "current_response": {
+                f"Section {i+1}": section.strip() 
+                for i, section in enumerate(sections)
+            }
+        }
 
         return jsonify(structured_output)
 
-    except KeyError as e:
-        print(f"KeyError: {str(e)}")
-        return jsonify({"error": "Respons API tidak valid", "details": str(e)}), 500
     except Exception as e:
-        # Menangani error umum
-        print(f"Error di generate(): {str(e)}")
-        return jsonify({"error": "Gagal menghasilkan teks", "details": str(e)}), 500
+        print(f"Error in generate(): {str(e)}")
+        return jsonify({
+            "error": "Gagal menghasilkan teks",
+            "details": str(e)
+        }), 500
+
+@app.route('/clear_memory', methods=['POST'])
+def clear_memory():
+    """Clear the conversation memory for the current session."""
+    try:
+        session_id = session.get('session_id')
+        if session_id in conversation_memories:
+            del conversation_memories[session_id]
+        return jsonify({"message": "Memory berhasil dihapus"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/get_history', methods=['GET'])
+def get_history():
+    try:
+        session_id = session.get('session_id')
+        if not session_id:
+            return jsonify({"error": "No session found"}), 404
+            
+        # Get runs from Langsmith for this session
+        runs = client.list_runs(
+            project_name=os.getenv("LANGSMITH_PROJECT", "my-chat-project"),
+            filter_=f"tags.session_id = '{session_id}'"
+        )
+        
+        history = []
+        for run in runs:
+            history.append({
+                "timestamp": str(run.start_time),
+                "prompt": run.inputs.get("input", ""),
+                "response": run.outputs.get("text", "") if run.outputs else "",
+                "runtime": str(run.end_time - run.start_time) if run.end_time else None
+            })
+            
+        return jsonify({"history": history})
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
