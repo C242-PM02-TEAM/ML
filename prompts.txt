@@ -1,0 +1,10 @@
+Create a Product Requirements Document (PRD) for a project management application with team collaboration features. Divide the PRD into the following eight sections:
+
+1. Introduction
+2. Objectives  
+3. Key Features  
+4. Target Audience  
+5. System Architecture  
+6. Security  
+7. Technical Requirements  
+8. Conclusion
