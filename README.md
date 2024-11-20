@@ -1,1 +1,1 @@
-# example-prd-maker
+# LLM-PRD-Maker
