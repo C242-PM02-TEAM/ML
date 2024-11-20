@@ -1,2 +1,6 @@
 flask
-requests
+python-dotenv
+langchain
+groq
+langchain_community
+langchain_groq
