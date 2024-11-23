@@ -1,0 +1,4 @@
+GROQ_API_KEY=Your_GROQ_API_KEY
+LANGCHAIN_API_KEY=Your_Langchain_API_KEY
+LANGSMITH_PROJECT=Your_langsmith_project_name
+LANGCHAIN_TRACING_V2=true_or_false
