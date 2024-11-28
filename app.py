@@ -1,6 +1,8 @@
 import os
-from flask import Flask, request, jsonify, render_template, session
+import json
+from flask import Flask, request, jsonify, render_template, send_from_directory, session
 from dotenv import load_dotenv
+from langchain.prompts import PromptTemplate
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.chains import LLMChain
@@ -12,6 +14,8 @@ import uuid
 from langsmith import Client
 from langchain.callbacks.tracers import LangChainTracer
 from langchain.callbacks.manager import CallbackManager
+from datetime import datetime
+
 
 # Load environment variables
 load_dotenv()
@@ -22,7 +26,7 @@ app.secret_key = os.urandom(24)
 
 # Initialize Langsmith client and tracer
 client = Client()
-tracer = LangChainTracer(project_name=os.getenv("LANGSMITH_PROJECT", "my-chat-project"))
+tracer = LangChainTracer(project_name=os.getenv("LANGSMITH_PROJECT"))
 
 # Setup callback manager
 callback_manager = CallbackManager([StreamingStdOutCallbackHandler(), tracer])
@@ -47,30 +51,33 @@ def get_or_create_memory(session_id: str) -> ConversationBufferMemory:
         )
     return conversation_memories[session_id]
 
-def create_chain(template: str, memory: ConversationBufferMemory) -> LLMChain:
+def create_chain(prompt_template: PromptTemplate, memory: ConversationBufferMemory) -> LLMChain:
     """Create a LangChain chain with memory."""
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", "Anda adalah asisten yang membantu dengan percakapan ini. Gunakan riwayat chat untuk memberikan respons yang kontekstual."),
-        MessagesPlaceholder(variable_name="chat_history"),
-        ("human", "{input}")
-    ])
-    
     return LLMChain(
         llm=llm,
-        prompt=prompt,
+        prompt=prompt_template,
         memory=memory,
         verbose=True,
         callback_manager=callback_manager
     )
 
-def load_prompt():
-    """Load prompt template from prompts.txt."""
+
+def load_prompt_from_file():
+    """Load the prompt template from a file."""
     try:
         with open("prompts.txt", "r") as file:
-            return file.read().strip()
+            prompt_text = file.read().strip()
+            return PromptTemplate(
+                input_variables=[
+                    "overview", "start_date", "end_date", "document_version", 
+                    "product_name", "document_owner", "developer", 
+                    "stakeholder", "doc_stage", "created_date"
+                ],
+                template=prompt_text
+            )
     except FileNotFoundError:
-        print("Error: File 'prompts.txt' tidak ditemukan.")
-        return ""
+        print("Error: File 'prompts.txt' not found.")
+        return None
 
 @app.route('/')
 def index():
@@ -88,75 +95,58 @@ def generate():
         # Get or create memory for this session
         memory = get_or_create_memory(session_id)
         
-        # Get prompt from request or file
+        # Get prompt from file or request
+        prompt_template = load_prompt_from_file()
+        if not prompt_template:
+            return jsonify({"error": "Prompt template could not be loaded"}), 400
+
+        # Get data from request and format as JSON
         data = request.json
-        prompt_text = data.get("prompt", "") or load_prompt()
 
-        if not prompt_text:
-            return jsonify({"error": "Prompt tidak boleh kosong"}), 400
-
-        # Create chain with memory and execute
-        chain = create_chain(prompt_text, memory)
-        result = chain.invoke({"input": prompt_text})
-        
-        # Log the result for debugging
-        print(f"Generated Text: {result['text']}")
-
-        # Split current response into sections
-        sections = result['text'].split("\n")[:8]
-        structured_output = {
-            "current_response": {
-                f"Section {i+1}": section.strip() 
-                for i, section in enumerate(sections)
-            }
+        # Create a unified JSON object with all required fields
+        prompt_data = {
+            "overview": data.get("overview", ""),
+            "start_date": data.get("start_date", ""),
+            "end_date": data.get("end_date", ""),
+            "document_version": data.get("document_version", ""),
+            "product_name": data.get("product_name", ""),
+            "document_owner": data.get("document_owner", ""),
+            "developer": data.get("developer", ""),
+            "stakeholder": data.get("stakeholder", ""),
+            "doc_stage": data.get("doc_stage", ""),
+            "created_date": data.get("created_date", ""),
         }
 
-        return jsonify(structured_output)
+        # Create the LangChain chain with prompt template and memory
+        chain = create_chain(prompt_template, memory)
+
+        # Use the chain to generate output based on the input data
+        result = chain.run(prompt_data)
+
+        # Return the result as a JSON response
+        return jsonify(result), 200
 
     except Exception as e:
-        print(f"Error in generate(): {str(e)}")
-        return jsonify({
-            "error": "Gagal menghasilkan teks",
-            "details": str(e)
-        }), 500
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/clear_memory', methods=['POST'])
 def clear_memory():
-    """Clear the conversation memory for the current session."""
-    try:
-        session_id = session.get('session_id')
-        if session_id in conversation_memories:
-            del conversation_memories[session_id]
-        return jsonify({"message": "Memory berhasil dihapus"})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    """Clear memory for the current session."""
+    session_id = session.get('session_id')
+    if session_id in conversation_memories:
+        del conversation_memories[session_id]
+        return jsonify({"message": "Memory cleared successfully"})
+    return jsonify({"error": "No memory found for the session"}), 404
 
 @app.route('/get_history', methods=['GET'])
 def get_history():
-    try:
-        session_id = session.get('session_id')
-        if not session_id:
-            return jsonify({"error": "No session found"}), 404
-            
-        # Get runs from Langsmith for this session
-        runs = client.list_runs(
-            project_name=os.getenv("LANGSMITH_PROJECT", "my-chat-project"),
-            filter_=f"tags.session_id = '{session_id}'"
-        )
-        
-        history = []
-        for run in runs:
-            history.append({
-                "timestamp": str(run.start_time),
-                "prompt": run.inputs.get("input", ""),
-                "response": run.outputs.get("text", "") if run.outputs else "",
-                "runtime": str(run.end_time - run.start_time) if run.end_time else None
-            })
-            
-        return jsonify({"history": history})
-        
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    """Retrieve the conversation history for the current session."""
+    session_id = session.get('session_id')
+    memory = get_or_create_memory(session_id)
+    history = memory.get_history()
+    return jsonify({"history": history})
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
