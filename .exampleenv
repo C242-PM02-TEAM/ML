@@ -1,4 +1,5 @@
-GROQ_API_KEY=Your_GROQ_API_KEY
+OPENAI_API_KEY=your_openai_api_key_here
+GROQ_API_KEY=your_groq_api_key_here
 LANGCHAIN_API_KEY=Your_Langchain_API_KEY
 LANGSMITH_PROJECT=Your_langsmith_project_name
-LANGCHAIN_TRACING_V2=true_or_false
+LANGCHAIN_TRACING_V2=true
