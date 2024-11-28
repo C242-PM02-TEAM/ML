@@ -47,7 +47,7 @@ def get_or_create_memory(session_id: str) -> ConversationBufferMemory:
     if session_id not in conversation_memories:
         conversation_memories[session_id] = ConversationBufferMemory(
             memory_key="chat_history",
-            return_messages=True
+            input_key="human_input"  # Set input_key to 'human_input' as required
         )
     return conversation_memories[session_id]
 
@@ -69,8 +69,8 @@ def load_prompt_from_file():
             prompt_text = file.read().strip()
             return PromptTemplate(
                 input_variables=[
-                    "overview", "start_date", "end_date", "document_version", 
-                    "product_name", "document_owner", "developer", 
+                    "human_input", "overview", "start_date", "end_date", "document_version",
+                    "product_name", "document_owner", "developer",
                     "stakeholder", "doc_stage", "created_date"
                 ],
                 template=prompt_text
@@ -102,29 +102,27 @@ def generate():
 
         # Get data from request and format as JSON
         data = request.json
+        data['human_input'] = ""  # Set human_input to empty string if not present
 
-        # Create a unified JSON object with all required fields
-        prompt_data = {
-            "overview": data.get("overview", ""),
-            "start_date": data.get("start_date", ""),
-            "end_date": data.get("end_date", ""),
-            "document_version": data.get("document_version", ""),
-            "product_name": data.get("product_name", ""),
-            "document_owner": data.get("document_owner", ""),
-            "developer": data.get("developer", ""),
-            "stakeholder": data.get("stakeholder", ""),
-            "doc_stage": data.get("doc_stage", ""),
-            "created_date": data.get("created_date", ""),
-        }
-
-        # Create the LangChain chain with prompt template and memory
+        # Create chain with memory and prompt
         chain = create_chain(prompt_template, memory)
 
-        # Use the chain to generate output based on the input data
-        result = chain.run(prompt_data)
+        # Run the chain with the provided input data
+        result = chain.predict(
+            human_input=data.get('human_input', ""), 
+            overview=data.get('overview', ""),
+            start_date=data.get('start_date', ""),
+            end_date=data.get('end_date', ""),
+            document_version=data.get('document_version', ""),
+            product_name=data.get('product_name', ""),
+            document_owner=data.get('document_owner', ""),
+            developer=data.get('developer', ""),
+            stakeholder=data.get('stakeholder', ""),
+            doc_stage=data.get('doc_stage', ""),
+            created_date=data.get('created_date', "")
+        )
 
-        # Return the result as a JSON response
-        return jsonify(result), 200
+        return jsonify({"output": result})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
