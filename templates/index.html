@@ -39,14 +39,14 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="start_date" class="form-label">Start Date</label>
-                    <input type="date" id="start_date" class="form-control" required />
+                    <input type="date" id="start_date" class="form-control" />
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="end_date" class="form-label">End Date</label>
-                    <input type="date" id="end_date" class="form-control" required />
+                    <input type="date" id="end_date" class="form-control" />
                 </div>
             </div>
         </div>
@@ -104,8 +104,8 @@
         // Get form values
         const data = {
             overview: $('#overview').val(),
-            start_date: $('#start_date').val(),
-            end_date: $('#end_date').val(),
+            start_date: $('#start_date').val() || "",  // Allow empty values for start_date and end_date
+            end_date: $('#end_date').val() || "",
             document_version: $('#document_version').val(),
             product_name: $('#product_name').val(),
             document_owner: $('#document_owner').val(),
