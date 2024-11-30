@@ -10,11 +10,14 @@ Create a detailed Product Requirement Document (PRD) in JSON format, with a well
         - Created Date: {created_date}
 
          Overview:
-        - *Problem Statement*: Please expand and provide a comprehensive description of the core problem the project aims to solve. 
-          Detail the impact of this problem, the challenges it presents, and the target audience or stakeholders affected. 
-          Highlight any existing gaps or inefficiencies in the current solutions that this project will address.
-        - *Objective*: Please provide a detailed explanation of the objectives of the project. This should outline the desired results and goals, 
-          breaking down the main objectives into specific, actionable tasks. Describe how the project will improve existing processes or create value for its users.
+        Input Overview: {overview}
+
+        Problem Statement:
+        Based on the provided overview, develop a cohesive and detailed paragraph describing the problem the project aims to solve. Clearly articulate the core issue, including its root causes, and explain its significance within the relevant context. Discuss the challenges faced by stakeholders, the inefficiencies or gaps in existing solutions, and the broader impact of this problem on systems, industries, or users. Ensure the problem statement highlights why addressing this issue is critical, referencing details from {overview}.
+
+        Objective:
+        Using the overview as a foundation, create a concise yet comprehensive paragraph that outlines the project’s objectives. Define the overarching goal and explain how it directly addresses the identified problem. Specify the key outcomes or deliverables expected from the project, emphasizing their value to stakeholders. Illustrate how the project will improve processes, bridge gaps in current solutions, or provide innovative benefits to its users. Tie the objectives to measurable and actionable results, ensuring alignment with the overall project purpose.
+
 
         Project Dates: Start Date: {start_date}, End Date: {end_date}
 
@@ -77,12 +80,39 @@ Create a detailed Product Requirement Document (PRD) in JSON format, with a well
         6. *User Stories*:
            - *Title*: Provide a descriptive title for the user story (e.g., "Dataset Access" or "User Registration").
            - *User Story*: A brief description of the user need (e.g., "As a user, I want to access a comprehensive dataset of images for training purposes").
-           - *Acceptance Criteria: Write the **Given, **When, **Then* format for the user story. This should specify the conditions under which the user story is considered complete (e.g., "Given I have access to the dataset, When I explore the dataset, Then I should find a diverse collection of images").
-           - *Priority*: Assign a priority level (High, Medium, Low) based on the importance and urgency of the user story. This should help prioritize development tasks (e.g., "High", "Medium", "Low").
+           - *Acceptance Criteria: Write the **Given, **When, **Then* format for the user story. This should specify the conditions under which the user story is considered complete (e.g., "Given access
+                  and
+                  downloading
+                  the dataset. 
+                  When I explore
+                  the dataset and
+                  inspect the
+                  downloaded
+                  les.
+                  Then I should
+                  nd a diverse
+                  collection of
+                  images
+                  including blur
+                  and bokeh
+                  product
+                  photographs
+                  and the dataset
+                  should be wellorganized and
+                  annotated with
+                  labels
+                  indicating
+                  whether each
+                  image is a blur,
+                  bokeh, or
+                  normal.
+").
+           - *Priority*: Assign a priority level (High, Medium, Low) based on the importance and urgency of the user story. This should help prioritize development tasks (e.g., "High", "Medium", "Low")
+
+  
 
         Please ensure that each user story follows this format with clear and actionable acceptance criteria and a defined priority. Ensure consistency in the wording of *Acceptance Criteria* and make sure the *Priority* aligns with the business goals.
 
         Return the result as a detailed and structured JSON. The output should clearly show the *Title, **User Story, **Acceptance Criteria, and **Priority* for each user story. The *Priority* should be set based on the urgency and importance of the feature to the overall project objectives.
-        Return the result as a detailed and structured JSON. Ensure that each section is comprehensive and clearly presented, particularly the *Success Metrics*, which should include appropriate definitions and targets that match the project’s goals.
+
     """
-)
