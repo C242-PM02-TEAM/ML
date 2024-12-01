@@ -47,10 +47,14 @@ def get_or_create_memory(session_id: str) -> ConversationBufferMemory:
     if session_id not in conversation_memories:
         conversation_memories[session_id] = ConversationBufferMemory(
             memory_key="chat_history",
-            input_key="human_input"  # Set input_key to 'human_input' as required
+            input_key="human_input"
         )
     return conversation_memories[session_id]
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 417fb8696b001df854fd8cb6831804a0412bf485
 def create_chain(prompt_template: PromptTemplate, memory: ConversationBufferMemory) -> LLMChain:
     """Create a LangChain chain with memory."""
     return LLMChain(
@@ -89,10 +93,21 @@ def index():
 @app.route('/generate', methods=['POST'])
 def generate():
     try:
+<<<<<<< HEAD
         # Get session ID or create new one
         session_id = session.get('session_id', str(uuid.uuid4()))
+=======
+        # Ambil session ID atau buat yang baru jika belum ada
+        session_id = session.get('session_id')
+        if not session_id:
+            session_id = str(uuid.uuid4())
+            session['session_id'] = session_id
         
-        # Get or create memory for this session
+        # Logging untuk debug
+        print(f"Session ID: {session_id}")
+>>>>>>> 417fb8696b001df854fd8cb6831804a0412bf485
+        
+        # Ambil atau buat memory untuk session ini
         memory = get_or_create_memory(session_id)
         
         # Get prompt from file or request
@@ -102,14 +117,18 @@ def generate():
 
         # Get data from request and format as JSON
         data = request.json
+<<<<<<< HEAD
         data['human_input'] = ""  # Set human_input to empty string if not present
+=======
+        human_input = data.get('human_input', "")
+>>>>>>> 417fb8696b001df854fd8cb6831804a0412bf485
 
         # Create chain with memory and prompt
         chain = create_chain(prompt_template, memory)
 
         # Run the chain with the provided input data
         result = chain.predict(
-            human_input=data.get('human_input', ""), 
+            human_input=human_input, 
             overview=data.get('overview', ""),
             start_date=data.get('start_date', ""),
             end_date=data.get('end_date', ""),
@@ -122,27 +141,48 @@ def generate():
             created_date=data.get('created_date', "")
         )
 
+<<<<<<< HEAD
+=======
+        # Tambahkan input dan output ke memory.chat_memory.messages
+        memory.chat_memory.messages.append(HumanMessage(content=human_input))
+        memory.chat_memory.messages.append(AIMessage(content=result))
+
+        # Return the result as output
+>>>>>>> 417fb8696b001df854fd8cb6831804a0412bf485
         return jsonify({"output": result})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/clear_memory', methods=['POST'])
-def clear_memory():
-    """Clear memory for the current session."""
-    session_id = session.get('session_id')
-    if session_id in conversation_memories:
-        del conversation_memories[session_id]
-        return jsonify({"message": "Memory cleared successfully"})
-    return jsonify({"error": "No memory found for the session"}), 404
+
 
 @app.route('/get_history', methods=['GET'])
 def get_history():
     """Retrieve the conversation history for the current session."""
     session_id = session.get('session_id')
+    print(f"Session ID: {session_id}")  # Debugging
+    
     memory = get_or_create_memory(session_id)
-    history = memory.get_history()
-    return jsonify({"history": history})
+    history = memory.chat_memory.messages
+    
+    print(f"Current chat history: {history}")  # Debugging
+    
+    # Konversi messages ke format yang bisa di-serialize
+    formatted_history = []
+    for message in history:
+        if isinstance(message, HumanMessage):
+            formatted_history.append({
+                "type": "human",
+                "content": message.content
+            })
+        elif isinstance(message, AIMessage):
+            formatted_history.append({
+                "type": "ai",
+                "content": message.content
+            })
+    
+    return jsonify({"history": formatted_history})
+
 
 
 
