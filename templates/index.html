@@ -24,117 +24,101 @@
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h2>Create Product Requirement Document (PRD)</h2>
-    <p>Fill in the details to generate a PRD document in JSON format.</p>
-    
-    <form id="prdForm">
-        <div class="mb-3">
-            <label for="overview" class="form-label">Overview</label>
-            <textarea id="overview" class="form-control" rows="3" required></textarea>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="start_date" class="form-label">Start Date</label>
-                    <input type="date" id="start_date" class="form-control" />
+    <div class="container">
+        <h2>Create Product Requirement Document (PRD)</h2>
+        <p>Fill in the details to generate a PRD document in JSON format.</p>
+        
+        <form id="prdForm">
+            <div class="mb-3">
+                <label for="overview" class="form-label">Overview</label>
+                <textarea id="overview" class="form-control" rows="3" required></textarea>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="start_date" class="form-label">Start Date</label>
+                        <input type="date" id="start_date" class="form-control" required />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="end_date" class="form-label">End Date</label>
+                        <input type="date" id="end_date" class="form-control" required />
+                    </div>
                 </div>
             </div>
-
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="end_date" class="form-label">End Date</label>
-                    <input type="date" id="end_date" class="form-control" />
-                </div>
+            <div class="mb-3">
+                <label for="document_version" class="form-label">Document Version</label>
+                <input type="text" id="document_version" class="form-control" required />
             </div>
+            <div class="mb-3">
+                <label for="product_name" class="form-label">Product Name</label>
+                <input type="text" id="product_name" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="document_owner" class="form-label">Document Owner</label>
+                <input type="text" id="document_owner" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="developer" class="form-label">Developer</label>
+                <input type="text" id="developer" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="stakeholder" class="form-label">Stakeholder</label>
+                <input type="text" id="stakeholder" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="doc_stage" class="form-label">Document Stage</label>
+                <input type="text" id="doc_stage" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="created_date" class="form-label">Created Date</label>
+                <input type="date" id="created_date" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Generate PRD</button>
+        </form>
+        <div class="response-output mt-4" id="responseOutput">
+            <!-- Generated PRD response will be displayed here -->
         </div>
-
-        <div class="mb-3">
-            <label for="document_version" class="form-label">Document Version</label>
-            <input type="text" id="document_version" class="form-control" required />
-        </div>
-
-        <div class="mb-3">
-            <label for="product_name" class="form-label">Product Name</label>
-            <input type="text" id="product_name" class="form-control" required />
-        </div>
-
-        <div class="mb-3">
-            <label for="document_owner" class="form-label">Document Owner</label>
-            <input type="text" id="document_owner" class="form-control" required />
-        </div>
-
-        <div class="mb-3">
-            <label for="developer" class="form-label">Developer</label>
-            <input type="text" id="developer" class="form-control" required />
-        </div>
-
-        <div class="mb-3">
-            <label for="stakeholder" class="form-label">Stakeholder</label>
-            <input type="text" id="stakeholder" class="form-control" required />
-        </div>
-
-        <div class="mb-3">
-            <label for="doc_stage" class="form-label">Document Stage</label>
-            <input type="text" id="doc_stage" class="form-control" required />
-        </div>
-
-        <div class="mb-3">
-            <label for="created_date" class="form-label">Created Date</label>
-            <input type="date" id="created_date" class="form-control" required />
-        </div>
-
-        <button type="submit" class="btn btn-primary">Generate PRD</button>
-    </form>
-
-    <div class="response-output mt-4" id="responseOutput">
-        <!-- Generated PRD response will be displayed here -->
     </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    // Handle form submission
-    $('#prdForm').on('submit', function(event) {
-        event.preventDefault();
-
-        // Get form values
-        const data = {
-            overview: $('#overview').val(),
-            start_date: $('#start_date').val() || "",  // Allow empty values for start_date and end_date
-            end_date: $('#end_date').val() || "",
-            document_version: $('#document_version').val(),
-            product_name: $('#product_name').val(),
-            document_owner: $('#document_owner').val(),
-            developer: $('#developer').val(),
-            stakeholder: $('#stakeholder').val(),
-            doc_stage: $('#doc_stage').val(),
-            created_date: $('#created_date').val()
-        };
-
-        // Make a POST request to generate the PRD
-        $.ajax({
-            url: '/generate',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            success: function(response) {
-                // Display the response
-                if (response.error) {
-                    $('#responseOutput').html('<p class="text-danger">' + response.error + '</p>');
-                } else {
-                    $('#responseOutput').html('<pre>' + JSON.stringify(response, null, 4) + '</pre>');
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Handle form submission
+        $('#prdForm').on('submit', function(event) {
+            event.preventDefault();
+            // Get form values
+            const data = {
+                overview: $('#overview').val(),
+                start_date: $('#start_date').val(),
+                end_date: $('#end_date').val(),
+                document_version: $('#document_version').val(),
+                product_name: $('#product_name').val(),
+                document_owner: $('#document_owner').val(),
+                developer: $('#developer').val(),
+                stakeholder: $('#stakeholder').val(),
+                doc_stage: $('#doc_stage').val(),
+                created_date: $('#created_date').val()
+            };
+            // Make a POST request to generate the PRD
+            $.ajax({
+                url: '/generate',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response) {
+                    // Display the response
+                    if (response.error) {
+                        $('#responseOutput').html('<p class="text-danger">' + response.error + '</p>');
+                    } else {
+                        $('#responseOutput').html('<pre>' + JSON.stringify(response, null, 4) + '</pre>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $('#responseOutput').html('<p class="text-danger">Error generating PRD: ' + error + '</p>');
                 }
-            },
-            error: function(xhr, status, error) {
-                $('#responseOutput').html('<p class="text-danger">Error generating PRD: ' + error + '</p>');
-            }
+            });
         });
-    });
-</script>
-
+    </script>
 </body>
 </html>
