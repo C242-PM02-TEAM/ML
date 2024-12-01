@@ -10,22 +10,15 @@ Create a detailed Product Requirement Document (PRD) in JSON format, with a well
         - Created Date: {created_date}
 
        Overview:
-        Input Overview: {overview}
-
-        Problem Statement:
-        Based on the provided overview, develop a cohesive and detailed paragraph describing the problem the project aims to solve. Clearly articulate the core issue, including its root causes, and explain its significance within the relevant context. Discuss the challenges faced by stakeholders, the inefficiencies or gaps in existing solutions, and the broader impact of this problem on systems, industries, or users. Ensure the problem statement highlights why addressing this issue is critical, referencing details from {overview}.
-
-        Objective:
-        Using the overview as a foundation, create a concise yet comprehensive paragraph that outlines the project’s objectives. Define the overarching goal and explain how it directly addresses the identified problem. Specify the key outcomes or deliverables expected from the project, emphasizing their value to stakeholders. Illustrate how the project will improve processes, bridge gaps in current solutions, or provide innovative benefits to its users. Tie the objectives to measurable and actionable results, ensuring alignment with the overall project purpose.
-
-
         Project Dates: Start Date: {start_date}, End Date: {end_date}
 
         The PRD should include the following sections:
+        Input Overview: {overview}
 
-        1. *Problem Statement*: Develop a comprehensive and detailed problem statement, breaking it down into smaller issues or challenges that need to be addressed.
+        1. *Problem Statement*: Based on the provided {overview}, develop a detailed and cohesive statement in **two paragraphs**. Each paragraph should contain no fewer than five sentences. In the first paragraph, clearly articulate the core issue the project aims to solve, including its root causes. Explain why this issue is significant within the relevant context, whether it's related to industry trends, user needs, or operational challenges. Discuss how current solutions fail to address this issue adequately, highlighting any inefficiencies or gaps. In the second paragraph, elaborate on the broader impact of this problem, including how it affects stakeholders, industries, or users at large. Discuss the potential risks of not addressing this issue and how the status quo could worsen over time. The problem statement should emphasize the urgency of solving this issue and why the project is crucial.
         
-        2. *Objective*: Provide a clear and actionable objective statement with specific goals and deliverables, indicating how the project will meet the problem statement.
+        2. *Objective*: Based on the provided {overview},Provide a clear and actionable objective section in **two paragraphs**. In the first paragraph, define the primary goals of the project and how they specifically address the identified problem. Clearly outline the desired outcomes or deliverables, ensuring they are aligned with the problem statement. Discuss how these goals will improve existing processes, reduce inefficiencies, or meet user demands. In the second paragraph, outline measurable and actionable results expected from the project. Highlight how the project will achieve these results using innovative methods, technologies, or process improvements. Make sure the objectives are realistic, time-bound, and linked to tangible benefits for stakeholders and users.
+         
 
         3. *DARCI Table*:
            - *Decider*: The person who has the final authority on key decisions, such as whether a feature gets prioritized, approving additional costs or resources, or making decisions that might affect the public relations (PR) of the project.
@@ -78,8 +71,144 @@ Create a detailed Product Requirement Document (PRD) in JSON format, with a well
            - Provide clear *Target* values based on the *Metrics* and *Definition*. Make sure the metrics align with the project's key objectives.
 
         6. *User Stories*:
-           - *Title*: Provide a descriptive title for the user story (e.g., "Dataset Access" or "User Registration").
-           - *User Story*: A brief description of the user need (e.g., "As a user, I want to access a comprehensive dataset of images for training purposes").
+           - *Title*: Provide a descriptive title for the user story (e.g., "Dataset Access" or "User Registration" or "Train Model" or "SDK Integrating" or "API For ClassifyingImages" or "More relevantresponses" or "Greeting"or "Consultation" or "Services" or "Contact" or "Dataset Access" or "UserRegistration" or "User Login"  or "Search EcoFriendly Accommodations" or "Book Sustainable Transportation -e-Car" or "User Prole Management" or "Transport Destination" or "PaymentMethod" or "Maturity Detection Accuracy Enhancement" or "Capture On-Field Seamlessly with ESP32 Cam" or "Centralized Data Management with Reliable Cloud Connectivity ").
+           - *User Story*: A brief description of the user need (e.g., "As a user, I want to access a comprehensive dataset of images for training purposes", or "As a user, I
+               want to access
+               a
+               comprehensive
+               dataset of
+               images for
+               training
+               purposes.
+               ", or "As a user, I
+               want to train a
+               machine
+               learning model
+               that accurately
+               distinguishes
+               between blurry,
+               bokeh, and
+               normal display
+               product
+               images.
+               " or "As a user, I
+               want to
+               integrate the
+               classication
+               tool into my
+               applications
+               using a
+               Software
+               Development
+               Kit (SDK).
+               " or "As a user, I
+               want to utilize
+               a web API for
+               classifying
+               images
+               remotely" or "As a user seeking
+               quick and concise
+               information, I
+               desire the virtual
+               assistant to deliver
+               clear and concise
+               responses,
+               avoiding
+               unnecessary
+               details and
+               providing the most
+               relevant
+               information based
+               on my query.
+               " or "as a user, I want
+               to get help and
+               information quickly" or "As a user, I would
+               like to know the
+               requirements for
+               consultation." or "As a user, I would
+               like to know what
+               services braincore
+               provides.
+               " or "As a user, I would
+               like to know what
+               contacts are
+               available to contact
+               braincore.
+               "
+               or "As a user, I
+               want to access
+               a
+               comprehensive
+               dataset of
+               images for
+               training
+               purposes."
+               or "As a user, I
+               want to train a
+               machine
+               learning model
+               that accurately
+               distinguishes
+               between blurry,
+               bokeh, and
+               normal display
+               product
+               " or "As a user, I
+               want to chose
+               my payment
+               method to pay
+               for my
+               bookings.
+               " or "As a user, I
+               want to chose
+               or search my
+               destination so
+               that the driver
+               knows where
+               my location is
+               " or "As a user, I
+               want to
+               manage my
+               prole so that I
+               can update my
+               personal
+               information
+               and
+               preferences.
+               " or "As a user, I
+               want to book
+               sustainable
+               transportation
+               for e-car to
+               minimize my
+               carbon
+               footprint during
+               travel." 
+               or "As a traveler, I
+               want to search
+               for eco-friendly
+               accommodations
+               so that I can
+               choose
+               sustainable
+               lodging
+               options.
+               " or "As a registered
+               user, I want to
+               log into my
+               account so that
+               I can access
+               my saved
+               preferences
+               and bookings.
+               " or "As a new user,
+               I want to
+               register an
+               account so that
+               I can access
+               personalized
+               travel
+               recommendation").
            - *Acceptance Criteria: Write the **Given, **When, **Then* format for the user story. This should specify the conditions under which the user story is considered complete (e.g., "Given access
                   and
                   downloading
@@ -105,8 +234,113 @@ Create a detailed Product Requirement Document (PRD) in JSON format, with a well
                   whether each
                   image is a blur,
                   bokeh, or
-                  normal.
-").
+                  normal." or "Given a user
+                  looking for quick
+                  and concise
+                  information,
+                  When the user
+                  interacts with the
+                  virtual assistant,
+                  Then the virtual
+                  assistant should
+                  deliver clear and
+                  concise responses,
+                  avoiding
+                  unnecessary
+                  details and
+                  providing the most
+                  relevant
+                  information based
+                  on the user's
+                  query.
+                  " or "Given the
+                  conversation
+                  keyword "hello",
+                  When the chatbot
+                  processes the
+                  input
+                  Then it should
+                  provide an
+                  introduction
+                  response and help
+                  the user around
+                  braincore.
+                  " or "Given the user a
+                  button to access
+                  the chatbot
+                  when the user is
+                  already in the
+                  chatbot, the user
+                  asks the question
+                  "What are the
+                  steps to do an AI
+                  consultation at
+                  Braincore.id?"
+                  Then the chatbot
+                  will provide
+                  detailed and
+                  necessary
+                  consultation
+                  requirement
+                  information at
+                  braincore.
+                  Example:
+                  user: I would like to
+                  know the
+                  requirements for a
+                  consultation.
+                  Zira: Information
+                  that needs to be
+                  prepared includes:
+                  - Purpose of AI use
+                  - Available data
+                  - Required
+                  capabilities
+                  - Time limit and
+                  budget" or "Given access
+                  to the API
+                  documentation
+                  and endpoints 
+                  When I
+                  interact with
+                  the API. 
+                  Then it should
+                  oer endpoints
+                  for submitting
+                  image data and
+                  receiving
+                  classication
+                  results.
+                  " or "Given the user
+                  has entered a
+                  pickup location,
+                  When the user
+                  enters a
+                  destination,
+                  Then the
+                  system
+                  validates the
+                  destination and
+                  calculates the
+                  route and
+                  estimated time
+                  of arrival.
+                  "or "Given the user
+                  is on the prole
+                  management
+                  page,
+                  when the user
+                  updates their
+                  information
+                  and clicks
+                  "Save,"
+                  then the
+                  system saves
+                  the changes
+                  and updates
+                  the prole
+                  immediately.
+                  ").
            - *Priority*: Assign a priority level (High, Medium, Low) based on the importance and urgency of the user story. This should help prioritize development tasks (e.g., "High", "Medium", "Low")
 
   
