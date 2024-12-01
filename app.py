@@ -122,7 +122,7 @@ def generate():
             created_date=data.get('created_date', "")
         )
 
-        return jsonify({"output": result})
+        return jsonify(result)
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

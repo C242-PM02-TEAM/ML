@@ -1,4 +1,4 @@
-Create a detailed Product Requirement Document (PRD) in JSON format, with a well-defined *Success Metrics* section that includes the following:
+Create a detailed Product Requirement Document (PRD) in JSON format, with a well-defined *Success Metrics* section that includes the following and please output just the json without explaining that its in json format::
 
         Metadata:
         - Document Version: {document_version}
