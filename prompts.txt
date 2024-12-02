@@ -21,13 +21,12 @@ Create a detailed Product Requirement Document (PRD) in JSON format, with a well
          
 
         3. *DARCI Table*:
-           - *Decider*: The person who has the final authority on key decisions, such as whether a feature gets prioritized, approving additional costs or resources, or making decisions that might affect the public relations (PR) of the project.
-           - *Accountable*: The person responsible for overseeing the entire project, ensuring tasks are completed on time and within scope, and reporting to decision-makers. This person is fully accountable for the success or failure of the project.
-           - *Responsible*: The individuals or teams actively involved in executing specific tasks related to the project. They handle the technical aspects and implementation of the solution.
-           - *Consulted*: The stakeholders or experts whose input is necessary for the success of the project. Their feedback and advice are valuable, but they are not responsible for completing tasks.
-           - *Informed*: Those who need to be kept updated about the project’s progress, challenges, and results. They don’t actively contribute but are kept in the loop.
-
-           Please generate *tags* and *guidelines* for each role that explain their responsibilities and involvement in the project.
+             "Based on the provided {overview}, Problem statement, and Objective, generate a list of dictionaries where each dictionary represents a role (Decider, Accountable, Responsible, Consulted, Informed) in the context of the project. Each dictionary should include the following fields:
+           - *Role*:  Include the specific roles (Decider, Accountable, Responsible, Consulted, Informed).
+           - *Tags*:  A dash (-) as the placeholder for this field.
+           - *guidlines* :  The guidelines should explain the specific responsibilities and involvement of each role based on the provided {overview}, Problem statement, and Objective. Tailor the guidelines to the unique aspects of the project, including its goals, challenges, technologies, and stakeholders. Be sure to integrate details from the overview to make each role’s guidelines highly relevant to the project’s success. The tone should be clear, professional, and directly applicable to the project context.
+             Please generate guidelines for each role that clearly reflect their responsibilities, actions, and involvement in the project.
+             
 
         4. *Project Timeline*:
            - Generate a *Project Timeline* table with the following columns:
@@ -71,282 +70,40 @@ Create a detailed Product Requirement Document (PRD) in JSON format, with a well
            - Provide clear *Target* values based on the *Metrics* and *Definition*. Make sure the metrics align with the project's key objectives.
 
         6. *User Stories*:
-           - *Title*: Provide a descriptive title for the user story (e.g., "Dataset Access" or "User Registration" or "Train Model" or "SDK Integrating" or "API For ClassifyingImages" or "More relevantresponses" or "Greeting"or "Consultation" or "Services" or "Contact" or "Dataset Access" or "UserRegistration" or "User Login"  or "Search EcoFriendly Accommodations" or "Book Sustainable Transportation -e-Car" or "User Prole Management" or "Transport Destination" or "PaymentMethod" or "Maturity Detection Accuracy Enhancement" or "Capture On-Field Seamlessly with ESP32 Cam" or "Centralized Data Management with Reliable Cloud Connectivity ").
-           - *User Story*: A brief description of the user need (e.g., "As a user, I want to access a comprehensive dataset of images for training purposes", or "As a user, I
-               want to access
-               a
-               comprehensive
-               dataset of
-               images for
-               training
-               purposes.
-               ", or "As a user, I
-               want to train a
-               machine
-               learning model
-               that accurately
-               distinguishes
-               between blurry,
-               bokeh, and
-               normal display
-               product
-               images.
-               " or "As a user, I
-               want to
-               integrate the
-               classication
-               tool into my
-               applications
-               using a
-               Software
-               Development
-               Kit (SDK).
-               " or "As a user, I
-               want to utilize
-               a web API for
-               classifying
-               images
-               remotely" or "As a user seeking
-               quick and concise
-               information, I
-               desire the virtual
-               assistant to deliver
-               clear and concise
-               responses,
-               avoiding
-               unnecessary
-               details and
-               providing the most
-               relevant
-               information based
-               on my query.
-               " or "as a user, I want
-               to get help and
-               information quickly" or "As a user, I would
-               like to know the
-               requirements for
-               consultation." or "As a user, I would
-               like to know what
-               services braincore
-               provides.
-               " or "As a user, I would
-               like to know what
-               contacts are
-               available to contact
-               braincore.
-               "
-               or "As a user, I
-               want to access
-               a
-               comprehensive
-               dataset of
-               images for
-               training
-               purposes."
-               or "As a user, I
-               want to train a
-               machine
-               learning model
-               that accurately
-               distinguishes
-               between blurry,
-               bokeh, and
-               normal display
-               product
-               " or "As a user, I
-               want to chose
-               my payment
-               method to pay
-               for my
-               bookings.
-               " or "As a user, I
-               want to chose
-               or search my
-               destination so
-               that the driver
-               knows where
-               my location is
-               " or "As a user, I
-               want to
-               manage my
-               prole so that I
-               can update my
-               personal
-               information
-               and
-               preferences.
-               " or "As a user, I
-               want to book
-               sustainable
-               transportation
-               for e-car to
-               minimize my
-               carbon
-               footprint during
-               travel." 
-               or "As a traveler, I
-               want to search
-               for eco-friendly
-               accommodations
-               so that I can
-               choose
-               sustainable
-               lodging
-               options.
-               " or "As a registered
-               user, I want to
-               log into my
-               account so that
-               I can access
-               my saved
-               preferences
-               and bookings.
-               " or "As a new user,
-               I want to
-               register an
-               account so that
-               I can access
-               personalized
-               travel
-               recommendation").
-           - *Acceptance Criteria: Write the **Given, **When, **Then* format for the user story. This should specify the conditions under which the user story is considered complete (e.g., "Given access
-                  and
-                  downloading
-                  the dataset. 
-                  When I explore
-                  the dataset and
-                  inspect the
-                  downloaded
-                  les.
-                  Then I should
-                  nd a diverse
-                  collection of
-                  images
-                  including blur
-                  and bokeh
-                  product
-                  photographs
-                  and the dataset
-                  should be wellorganized and
-                  annotated with
-                  labels
-                  indicating
-                  whether each
-                  image is a blur,
-                  bokeh, or
-                  normal." or "Given a user
-                  looking for quick
-                  and concise
-                  information,
-                  When the user
-                  interacts with the
-                  virtual assistant,
-                  Then the virtual
-                  assistant should
-                  deliver clear and
-                  concise responses,
-                  avoiding
-                  unnecessary
-                  details and
-                  providing the most
-                  relevant
-                  information based
-                  on the user's
-                  query.
-                  " or "Given the
-                  conversation
-                  keyword "hello",
-                  When the chatbot
-                  processes the
-                  input
-                  Then it should
-                  provide an
-                  introduction
-                  response and help
-                  the user around
-                  braincore.
-                  " or "Given the user a
-                  button to access
-                  the chatbot
-                  when the user is
-                  already in the
-                  chatbot, the user
-                  asks the question
-                  "What are the
-                  steps to do an AI
-                  consultation at
-                  Braincore.id?"
-                  Then the chatbot
-                  will provide
-                  detailed and
-                  necessary
-                  consultation
-                  requirement
-                  information at
-                  braincore.
-                  Example:
-                  user: I would like to
-                  know the
-                  requirements for a
-                  consultation.
-                  Zira: Information
-                  that needs to be
-                  prepared includes:
-                  - Purpose of AI use
-                  - Available data
-                  - Required
-                  capabilities
-                  - Time limit and
-                  budget" or "Given access
-                  to the API
-                  documentation
-                  and endpoints 
-                  When I
-                  interact with
-                  the API. 
-                  Then it should
-                  oer endpoints
-                  for submitting
-                  image data and
-                  receiving
-                  classication
-                  results.
-                  " or "Given the user
-                  has entered a
-                  pickup location,
-                  When the user
-                  enters a
-                  destination,
-                  Then the
-                  system
-                  validates the
-                  destination and
-                  calculates the
-                  route and
-                  estimated time
-                  of arrival.
-                  "or "Given the user
-                  is on the prole
-                  management
-                  page,
-                  when the user
-                  updates their
-                  information
-                  and clicks
-                  "Save,"
-                  then the
-                  system saves
-                  the changes
-                  and updates
-                  the prole
-                  immediately.
-                  ").
+           - *Title*: Based on the provided Problem Statement and Objective, generate user story titles that reflect key solutions addressing the problems. The titles must:  
+               1. Be concise, clear, and user-focused.  
+               2. Derive directly from the provided Problem Statement and Objectives, emphasizing solutions.  
+               3. Represent specific functionalities or improvements to the system.
+
+               Example:  
+               - For "irrelevant responses" and "design contextualized responses," the title should be "More Relevant Responses."  
+               - For "context understanding" and "improve adaptability," the title should be "Consultation Requirements."  
+
+               Write the titles without formatting or additional descriptions.
+
+           - *User Story*:  Based on each generated Title, create a user story using the following format:
+
+               "As a [specific user persona], I want [specific functionality or feature] so that [desired outcome]."
+               Limit the user story to 4 sentences or fewer to maintain clarity.
+               Example:
+
+               Title: "More Relevant Responses"
+               User Story: "As a user seeking quick and concise information, I want the virtual assistant to provide clear and concise answers so that I can get the most relevant information without unnecessary details."
+
+           - *Acceptance Criteria: Based on the provided Problem Statement and Objectives, generate user story titles, user stories, and acceptance criteria in one paragraph for each title. Titles must be concise, user-focused, and solution-oriented, addressing specific problems and objectives. For each title, create a corresponding user story in the format: "As a [specific user persona], I want [specific functionality or feature] so that [desired outcome]." Then, describe the acceptance criteria for this user story in a single paragraph, specifying conditions for successful implementation. Use clear and simple language to ensure alignment with the problem statement and objectives.
+
+               Example Prompt Output:
+               Title: More Relevant Responses
+               User Story: As a user seeking quick and concise information, I want the virtual assistant to provide clear and concise answers so that I can get the most relevant information without unnecessary details.
+               Acceptance Criteria: Given a user looking for quick and concise information, when the user interacts with the virtual assistant, the system should provide clear and concise responses, avoiding unnecessary details and focusing on delivering the most relevant information based on the query, ensuring improved accuracy and user satisfaction.
+
+               This structure ensures clarity and alignment across the problem statement, objectives, and user needs.
+             
            - *Priority*: Assign a priority level (High, Medium, Low) based on the importance and urgency of the user story. This should help prioritize development tasks (e.g., "High", "Medium", "Low")
+         
+         Please ensure that each user story follows this format with clear and actionable acceptance criteria and a defined priority. Ensure consistency in the wording of *Acceptance Criteria* and make sure the *Priority* aligns with the business goals.
+         
+         Return the result as a detailed and structured JSON. The output should clearly show the *Title, **User Story, **Acceptance Criteria, and **Priority* for each user story. The *Priority* should be set based on the urgency and importance of the feature to the overall project objectives.
 
-  
-
-        Please ensure that each user story follows this format with clear and actionable acceptance criteria and a defined priority. Ensure consistency in the wording of *Acceptance Criteria* and make sure the *Priority* aligns with the business goals.
-
-        Return the result as a detailed and structured JSON. The output should clearly show the *Title, **User Story, **Acceptance Criteria, and **Priority* for each user story. The *Priority* should be set based on the urgency and importance of the feature to the overall project objectives.
 
     """
