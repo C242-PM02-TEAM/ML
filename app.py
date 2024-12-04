@@ -1,13 +1,12 @@
 import os
-import json
 import uuid
 from flask import Flask, request, jsonify, render_template, session
 from dotenv import load_dotenv
+
 from helpers import (
-    get_or_create_memory, 
-    create_chain, 
-    load_prompt_from_file, 
-    llm, 
+    get_or_create_memory,
+    load_prompt_from_file,
+    create_chain,
     conversation_memories
 )
 

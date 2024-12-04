@@ -1,19 +1,23 @@
 import os
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
-from langchain_groq import ChatGroq
 from langchain.memory import ConversationBufferMemory
+from langchain_groq import ChatGroq
 from langchain.callbacks import StreamingStdOutCallbackHandler
+from langsmith import Client
+from langchain.callbacks.tracers import LangChainTracer
 from langchain.callbacks.manager import CallbackManager
-from dotenv import load_dotenv
 from typing import Dict
 
-# Load environment variables
-load_dotenv()
-
-# Initialize Langsmith client and tracer (if needed)
-callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+# Dictionary untuk menyimpan memory untuk setiap session
 conversation_memories: Dict[str, ConversationBufferMemory] = {}
+
+# Initialize Langsmith client and tracer
+client = Client()
+tracer = LangChainTracer(project_name=os.getenv("LANGSMITH_PROJECT"))
+
+# Setup callback manager
+callback_manager = CallbackManager([StreamingStdOutCallbackHandler(), tracer])
 
 # Initialize Groq LLM with LangChain
 llm = ChatGroq(
