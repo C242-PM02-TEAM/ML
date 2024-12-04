@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.memory import ConversationBufferMemory
@@ -8,6 +9,9 @@ from langsmith import Client
 from langchain.callbacks.tracers import LangChainTracer
 from langchain.callbacks.manager import CallbackManager
 from typing import Dict
+
+# Load environment variables
+load_dotenv()
 
 # Dictionary untuk menyimpan memory untuk setiap session
 conversation_memories: Dict[str, ConversationBufferMemory] = {}

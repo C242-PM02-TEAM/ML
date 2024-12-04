@@ -82,5 +82,7 @@ def get_history():
     history = memory.get_history()
     return jsonify({"history": history})
 
+
+
 if __name__ == '__main__':
     app.run(debug=True)
