@@ -1,7 +1,10 @@
-flask
+Flask
 python-dotenv
 langchain
+langchain-groq
+langsmith
+uuid
+requests
 openai
 groq
 langchain_community
-langchain_groq
