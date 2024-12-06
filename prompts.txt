@@ -63,48 +63,41 @@ Create a detailed Product Requirement Document (PRD) in JSON format, with a well
                 The timeline should be as detailed as possible, breaking down large tasks into smaller subtasks if necessary, and assign realistic timeframes and responsibilities.
 
         5. *Success Metrics*:
-           - Define a *Success Metrics* table with the following columns:
-             - *Metrics*: The specific measure of success, such as accuracy, performance, user satisfaction, etc.
-             - *Definition*: A clear description of what the metric represents.
-             - *Actual*: The current or estimated actual value of the metric (can be left as "N/A" initially).
-             - *Target: The target value that needs to be achieved for this metric. The **Target* does not have to be a percentage; it can be a specific value, such as a time frame, number of users, or performance level.
-           - Provide clear *Target* values based on the *Metrics* and *Definition*. Make sure the metrics align with the project's key objectives.
+            Based on the provided Overview, create a detailed Success Metrics table to evaluate the project's key performance indicators (KPIs). The table should include the following columns:
+            Please create a detailed Success Metrics table to evaluate the key performance indicators (KPIs) for the project. The table should include the following columns:
 
-        6. *User Stories*:
-           - *Title*: Based on the provided Problem Statement and Objective, generate user story titles that reflect key solutions addressing the problems. The titles must:  
-               1. Be concise, clear, and user-focused.  
-               2. Derive directly from the provided Problem Statement and Objectives, emphasizing solutions.  
-               3. Represent specific functionalities or improvements to the system.
+                  Metrics: Clearly define the specific measure of success (e.g., accuracy, performance, user satisfaction). These metrics must be directly tied to the project’s domain, objectives, and functionalities described in the provided overview.
 
-               Example:  
-               - For "irrelevant responses" and "design contextualized responses," the title should be "More Relevant Responses."  
-               - For "context understanding" and "improve adaptability," the title should be "Consultation Requirements."  
+                  Definition: Provide a concise and clear explanation of what each metric represents. Include why it is critical to the project’s success and how it ties back to the goals and expected outcomes mentioned in the overview.
 
-               Write the titles without formatting or additional descriptions.
+                  Actual: Indicate the current or estimated actual value for each metric. If no data exists, use "-" as a placeholder.
 
-           - *User Story*:  Based on each generated Title, create a user story using the following format:
+                  Target: Specify measurable and achievable target values for each metric, ensuring they reflect realistic expectations based on the project’s overview.
 
-               "As a [specific user persona], I want [specific functionality or feature] so that [desired outcome]."
-               Limit the user story to 4 sentences or fewer to maintain clarity.
-               Example:
+                  Requirements:
 
-               Title: "More Relevant Responses"
-               User Story: "As a user seeking quick and concise information, I want the virtual assistant to provide clear and concise answers so that I can get the most relevant information without unnecessary details."
+                  Metrics should cover key aspects of performance, user engagement, satisfaction, system reliability, scalability, or other factors relevant to the project.
+                  Definitions should emphasize the importance of the metric in relation to the project’s overall success and objectives.
+                  Targets must be SMART (Specific, Measurable, Achievable, Relevant, and Time-bound), ensuring they align with the goals outlined in the overview.
+                  Include at least 4–6 metrics to provide a well-rounded and comprehensive evaluation.
 
-           - *Acceptance Criteria: Based on the provided Problem Statement and Objectives, generate user story titles, user stories, and acceptance criteria in one paragraph for each title. Titles must be concise, user-focused, and solution-oriented, addressing specific problems and objectives. For each title, create a corresponding user story in the format: "As a [specific user persona], I want [specific functionality or feature] so that [desired outcome]." Then, describe the acceptance criteria for this user story in a single paragraph, specifying conditions for successful implementation. Use clear and simple language to ensure alignment with the problem statement and objectives.
+         6. *User Stories*:
+            
+            Based on the provided Problem Statement and Objectives, generate exactly  Each story must include:
+            **Genarate atleast  6-7 output **
 
-               Example Prompt Output:
-               Title: More Relevant Responses
-               User Story: As a user seeking quick and concise information, I want the virtual assistant to provide clear and concise answers so that I can get the most relevant information without unnecessary details.
-               Acceptance Criteria: Given a user looking for quick and concise information, when the user interacts with the virtual assistant, the system should provide clear and concise responses, avoiding unnecessary details and focusing on delivering the most relevant information based on the query, ensuring improved accuracy and user satisfaction.
+            Title: **A concise, user-focused summary in 2 words**
+            User Story: A statement in the format: "As a [specific user persona], I want [specific functionality or feature] so that [desired outcome]."
+            Acceptance Criteria: **no list just paragraf**
+            2–4 measurable conditions to define the story as done a statement format Given  [Condition or situation that must be true at the start]
+            When [Action or event that triggers the condition] Then [Expected outcome or behavior after the action is triggered]         
+            Priority: Assign "High," "Medium," or "Low" based on the feature’s urgency and importance.
+            Format the output as JSON, with exactly 5 entries in the array.
 
-               This structure ensures clarity and alignment across the problem statement, objectives, and user needs.
-             
-           - *Priority*: Assign a priority level (High, Medium, Low) based on the importance and urgency of the user story. This should help prioritize development tasks (e.g., "High", "Medium", "Low")
-         
-         Please ensure that each user story follows this format with clear and actionable acceptance criteria and a defined priority. Ensure consistency in the wording of *Acceptance Criteria* and make sure the *Priority* aligns with the business goals.
-         
+            requirements:
+                  Include at least 4–6 User Stories
+
+            
          Return the result as a detailed and structured JSON. The output should clearly show the *Title, **User Story, **Acceptance Criteria, and **Priority* for each user story. The *Priority* should be set based on the urgency and importance of the feature to the overall project objectives.
-
 
     """
