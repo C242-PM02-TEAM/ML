@@ -1,6 +1,6 @@
 import os
 import uuid
-from flask import Flask, request, jsonify, render_template, session
+from flask import Flask, request, json, jsonify, render_template, session
 from dotenv import load_dotenv
 
 from helpers import (
@@ -56,7 +56,15 @@ def generate():
         # Run the chain using invoke
         result = chain.invoke(inputs)
 
-        return jsonify(result)
+        # Clean and restructure the result to match terminal output
+        cleaned_result = json.loads(result["text"])  # Convert text field to dict
+        # Ensure any extra keys like "human_input" and "text" are removed
+        final_result = {
+            key: value for key, value in cleaned_result.items() if key not in ["human_input", "text"]
+        }
+
+        # Return the formatted JSON response
+        return jsonify(final_result)
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
