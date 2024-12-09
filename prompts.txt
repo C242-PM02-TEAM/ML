@@ -1,8 +1,8 @@
-Create a detailed Product Requirement Document (PRD) in JSON format, with a well-defined *Success Metrics* section that includes the following and please output just the json without explaining that its in json format::
+Create a detailed Product Requirement Document (PRD) in JSON format, with a well-defined *Success Metrics* section that includes the following and please output just the json without explaining that its in json format:
 
         Metadata:
         - Document Version: {document_version}
-        - Product Name: {product_name}
+        - Product Name: {project_name}
         - Document Owner: {document_owner}
         - Developer: {developer}
         - Stakeholder: {stakeholder}
@@ -16,88 +16,88 @@ Create a detailed Product Requirement Document (PRD) in JSON format, with a well
         Input Overview: {overview}
 
         1. *Problem Statement*:   Based on the provided {overview}, develop a detailed and cohesive statement in **two paragraphs**. Each paragraph should contain no fewer than five sentences. In the first paragraph, clearly articulate the core issue the project aims to solve, including its root causes. Explain why this issue is significant within the relevant context, whether it's related to industry trends, user needs, or operational challenges. Discuss how current solutions fail to address this issue adequately, highlighting any inefficiencies or gaps. In the second paragraph, elaborate on the broader impact of this problem, including how it affects stakeholders, industries, or users at large. Discuss the potential risks of not addressing this issue and how the status quo could worsen over time. The problem statement should emphasize the urgency of solving this issue and why the project is crucial.
-           **the output is a key *Probelem Statements* and inside the key there must be 2 paragraphs not (list and key)**
+           **the output is a key *Probelem Statements* and inside the key there must be 2 paragraphs not (list,ke, and poin)**
+           
         2. *Objective*: Based on the provided {overview},Provide a clear and actionable objective section in **two paragraphs**. In the first paragraph, define the primary goals of the project and how they specifically address the identified problem. Clearly outline the desired outcomes or deliverables, ensuring they are aligned with the problem statement. Discuss how these goals will improve existing processes, reduce inefficiencies, or meet user demands. In the second paragraph, outline measurable and actionable results expected from the project. Highlight how the project will achieve these results using innovative methods, technologies, or process improvements. Make sure the objectives are realistic, time-bound, and linked to tangible benefits for stakeholders and users.
-           **the output is a key *Objective* and inside the key there must be 2 paragraphs not (list an key)**
-
+           **the output is a key *Objective* and inside the key there must be 2 paragraphs not (list,key,and poin)**
 
         3. *DARCI Table*:
-             "Based on the provided {overview}, Problem statement, and Objective, generate a list of dictionaries where each dictionary represents a role (Decider, Accountable, Responsible, Consulted, Informed) in the context of the project. Each dictionary should include the following fields:
-           - *Role*:  Include the specific roles (Decider, Accountable, Responsible, Consulted, Informed).
-           - *Tags*:  A dash (-) as the placeholder for this field.
-           - *guidlines* :  The guidelines should explain the specific responsibilities and involvement of each role based on the provided {overview}, Problem statement, and Objective. Tailor the guidelines to the unique aspects of the project, including its goals, challenges, technologies, and stakeholders. Be sure to integrate details from the overview to make each role’s guidelines highly relevant to the project’s success. The tone should be clear, professional, and directly applicable to the project context.
-             Please generate guidelines for each role that clearly reflect their responsibilities, actions, and involvement in the project.
+            Based on {overview}, generate a DARCI Table for the project. The table should detail the specific in guidelines
+               Role: Specify the role name (e.g., Decider, Accountable, Responsible, Consulted, Informed).
+               Tags: Use a dash "-" as a placeholder for this field.
+               Guidelines: Write clear, specific, and actionable role-specific guidelines that directly relate to the objectives, problem statement, and overall context of the project.
+
+            Please generate guidelines for each role that clearly reflect their responsibilities, actions, and involvement in the project.
              
-
+            
         4. *Project Timeline*:
-           - Generate a *Project Timeline* table with the following columns:
-             -*Time Period*: Generate specific time periods from the start and end dates provided. Ensure the timeline spans the given period and break it down into clear, actionable segments.
-             -*Activity*: List the major activities or tasks to be completed during each time period. Ensure the activities are relevant to the project's scope, such as research, development, testing, deployment, etc.
-             -*PIC (Person in Charge)*: Assign specific team members or teams to each activity. If the exact individuals are not available, use placeholder names like 'Team Engineering' or 'Project Manager' for responsibilities.
-                Be sure to break down the overall timeline into smaller, manageable tasks. The output should follow a structure like this:
-                - Ensure the timeline includes multiple phases of the project, each with clearly defined activities and responsible persons.
-                - Provide *Time Period* and *Activity* for each phase and ensure to assign a *PIC* for each task. The timeline should be broken down into milestones and key activities, such as design, development, integration, testing, and deployment.
-                  The PRD should include the following *Project Timeline* section:
+            Generate a highly detailed Project Timeline table based on the provided Objective and Problem Statement. The output must include:
+                  Generate a detailed Project Timeline table based on the provided Objective and Problem Statement. The table must include the following columns:
 
-                - Time Period: [Start Date] - [End Date]
-                - Activity: [Describe the activity that will take place during this period]
-                - PIC: [Name of person/team responsible for the activity]
+                  Time Period:
+                  Use distinct Start Date and End Date for each phase in the format YYYY-MMMM-DD - YYYY-MM-DD.
+                  Ensure the timeline is divided into at least 6-7 phases with realistic timeframes.
 
-                Example:
-                1. Time Period: 03 Sep 2024 - 20 Sep 2024
-                Activity: Model Development (e.g., MTCNN/DeepFace)
-                PIC: Team Engineering
+                  Activity:
+                  Provide a two-sentence description of the tasks to be accomplished in this phase.Each description should clearly define actionable steps, their purpose, and the expected outcomes. Include how the activity addresses the Problem Statement and aligns with the Objective. If applicable, mention iterative processes like testing or reviews.
 
-                2. Time Period: 23 Sep 2024 - 07 Oct 2024
-                Activity: Flask/FastAPI Development
-                PIC: Team Engineering
+                  PIC (Person in Charge):
+                  Assign specific individuals or teams based on the provided roles. If specific names are not available, use placeholders like "Frontend Team", "Backend Team", or similar.
+                  
+                  Rules:
+                  Ensure all activities are derived from the Objective and Problem Statement.
+                  Ensure each Time Period is expressed in the format YYYY-MM-DD - YYYY-MMMM-DD to reflect specific start and end dates.
+                  Break down large tasks into smaller subtasks if necessary.
+                  Provide realistic timeframes and assign appropriate responsibilities.
 
-                3. Time Period: 07 Oct 2024 - 18 Oct 2024
-                Activity: Mobile Integration (e.g., Kotlin)
-                PIC: Team Engineering
-
-                4. Time Period: 21 Oct 2024 - 01 Nov 2024
-                Activity: Testing and Optimization
-                PIC: Team Engineering
-
-                The timeline should be as detailed as possible, breaking down large tasks into smaller subtasks if necessary, and assign realistic timeframes and responsibilities.
+                  Example Structure:
+                  
+                     "Time Period": "2025-March-01 - 2025-March-31",
+                     "Activity": "Planning and Requirements Gathering: During this phase, the team will collaborate with stakeholders to define project objectives, scope, and deliverables. Tasks include conducting interviews, identifying user personas, drafting a detailed project plan, and finalizing key performance indicators. This phase ensures the project is built on a strong foundation and aligns with stakeholder expectations.",
+                     "PIC": "Sophia"
+                  
 
         5. *Success Metrics*:
-            Based on the provided Overview, create a detailed Success Metrics table to evaluate the project's key performance indicators (KPIs). The table should include the following columns:
-            Please create a detailed Success Metrics table to evaluate the key performance indicators (KPIs) for the project. The table should include the following columns:
+            Using the provided {overview}, create a Success Metrics Table to evaluate the project's Key Performance Indicators (KPIs). The table must reflect the project’s domain, objectives, and challenges, providing a comprehensive and actionable evaluation framework.
 
-                  Metrics: Clearly define the specific measure of success (e.g., accuracy, performance, user satisfaction). These metrics must be directly tied to the project’s domain, objectives, and functionalities described in the provided overview.
+                  Table Requirements:
+                  The output must include exactly 8 metrics regardless of the context unless explicitly directed otherwise in the {overview}.
 
-                  Definition: Provide a concise and clear explanation of what each metric represents. Include why it is critical to the project’s success and how it ties back to the goals and expected outcomes mentioned in the overview.
+                  Metrics: Define specific measures of success (e.g., system performance, user engagement, scalability, accuracy).
+                  Definition: Provide a clear and concise explanation of what each metric measures, why it is important, and how it aligns with the project goals described in the {overview}.
+                  Actual: Indicate the current or estimated value of the metric. Use "-" as a placeholder if data is unavailable.
+                  Target: Include both a measurable target value and a brief explanation of its significance, addressing why it’s important and what achieving it entails for the project. Ensure targets are SMART (Specific, Measurable, Achievable, Relevant, and Time-bound).
+                        
+                  Output Requirements:
+                  Generate exactly 8 metrics unless the {overview} explicitly suggests fewer.
+                  Tailor each metric to cover key aspects of the project, such as performance, reliability, user satisfaction, scalability, engagement, or specific objectives mentioned in the {overview}.
+                  Ensure each metric provides a well-rounded evaluation of the project’s success, addressing both quantitative and qualitative goals.
 
-                  Actual: Indicate the current or estimated actual value for each metric. If no data exists, use "-" as a placeholder.
+         6. User Stories:
+            Using the provided {overview}, generate **exactly 8 User Stories and title summarize 2 words**. 
 
-                  Target: Specify measurable and achievable target values for each metric, ensuring they reflect realistic expectations based on the project’s overview.
+            Table Requirements:
+            1. The output must include exactly 8 User Stories regardless of the context unless explicitly directed otherwise in the {overview}.
+            2. For missing stories, logically infer additional user needs, enhancements, or edge cases tied to the project goals.
 
-                  Requirements:
+            Each story must include:
+            - **Title**: Each story is now summarized with exactly *two words*
+            - **User Story**: A statement in the format: "As a [specific user persona], I want [specific functionality or feature] so that [desired outcome]."
+            - **Acceptance Criteria**: Written as a single paragraph, using measurable conditions in the format:
+            - "Given [Condition or situation that must be true at the start], When [Action or event that triggers the condition], Then [Expected outcome or behavior after the action is triggered]."
+            - **Priority**: Assign "High," "Medium," or "Low" based on:
+            - High: Critical to success or user satisfaction.
+            - Medium: Important but non-urgent.
+            - Low: Enhancements or optional features.
 
-                  Metrics should cover key aspects of performance, user engagement, satisfaction, system reliability, scalability, or other factors relevant to the project.
-                  Definitions should emphasize the importance of the metric in relation to the project’s overall success and objectives.
-                  Targets must be SMART (Specific, Measurable, Achievable, Relevant, and Time-bound), ensuring they align with the goals outlined in the overview.
-                  Include at least 4–6 metrics to provide a well-rounded and comprehensive evaluation.
+            Output Requirements:
+            1. Generate exactly 8 User Stories unless the {overview} explicitly suggests fewer.
+            2. The output must be in JSON format.
+            3. Each story must be clear, concise, and directly reflect the project's objectives and problem statement.
+            4. If fewer stories are naturally generated, infer the remaining based on project goals.
 
-         6. *User Stories*:
-            
-            Based on the provided Problem Statement and Objectives, generate exactly  Each story must include:
-            **Genarate atleast  6-7 output **
+            Note: The acceptance criteria and user stories must focus on outcomes, clarity, and measurable success factors.
 
-            Title: **A concise, user-focused summary in 2 words**
-            User Story: A statement in the format: "As a [specific user persona], I want [specific functionality or feature] so that [desired outcome]."
-            Acceptance Criteria: **no list just paragraf**
-            2–4 measurable conditions to define the story as done a statement format Given  [Condition or situation that must be true at the start]
-            When [Action or event that triggers the condition] Then [Expected outcome or behavior after the action is triggered]         
-            Priority: Assign "High," "Medium," or "Low" based on the feature’s urgency and importance.
-            Format the output as JSON, with exactly 5 entries in the array.
-
-            requirements:
-                  Include at least 4–6 User Stories
-
-            
          Return the result as a detailed and structured JSON. The output should clearly show the *Title, **User Story, **Acceptance Criteria, and **Priority* for each user story. The *Priority* should be set based on the urgency and importance of the feature to the overall project objectives.
 
     """
