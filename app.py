@@ -1,6 +1,6 @@
 import os
 import uuid
-from flask import Flask, request, json, jsonify, render_template, session
+from flask import Flask, request, jsonify, session
 from dotenv import load_dotenv
 
 from helpers import (
@@ -41,7 +41,7 @@ def generate():
 
         data = request.json or {}
 
-        # Prepare inputs
+        # Prepare inputs as a dictionary
         inputs = {
             "overview": data.get("overview", ""),
             "start_date": data.get("start_date", ""),
@@ -55,26 +55,23 @@ def generate():
             "created_date": data.get("created_date", "")
         }
 
+        # Ensure inputs are formatted as expected
+        prompt_text = prompt_template.format(**inputs)
+
         # Generate result
         chain = create_chain(prompt_template, memory)
-        result = chain.invoke(inputs)
+        result = chain.run(inputs)  # Pass dictionary as input
 
-        # Parse and clean result
-        cleaned_result = json.loads(result["text"])
-
-        # Ensure no extra data beyond overview
-        if "Overview" in cleaned_result:
-            cleaned_result["Overview"] = cleaned_result["Overview"].strip()
-
-        final_result = {key: value for key, value in cleaned_result.items() if key not in ["human_input", "text"]}
-
-        return jsonify(final_result)
+        # Validate output format and parse
+        try:
+            output_json = json.loads(result)
+            validate_output_format(output_json)
+            return jsonify(output_json)
+        except ValueError as ve:
+            return jsonify({"error": str(ve)}), 400
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-
-
 
 
 if __name__ == '__main__':
