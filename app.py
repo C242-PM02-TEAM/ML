@@ -60,7 +60,7 @@ def generate():
 
         # Generate result
         chain = create_chain(prompt_template, memory)
-        result = chain.run(inputs)  # Pass dictionary as input
+        result = chain.invoke(inputs)  # Pass dictionary as input
 
         # Validate output format and parse
         try:
