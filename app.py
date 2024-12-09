@@ -42,7 +42,7 @@ def generate():
             "start_date": data.get("start_date", ""),
             "end_date": data.get("end_date", ""),
             "document_version": data.get("document_version", ""),
-            "project_name": data.get("project_name", ""),
+            "product_name": data.get("product_name", ""),
             "document_owner": data.get("document_owner", ""),
             "developer": data.get("developer", ""),
             "stakeholder": data.get("stakeholder", ""),

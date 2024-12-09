@@ -68,7 +68,7 @@ def load_prompt_from_file():
             return PromptTemplate(
                 input_variables=[
                     "overview", "start_date", "end_date", "document_version",
-                    "project_name", "document_owner", "developer",
+                    "product_name", "document_owner", "developer",
                     "stakeholder", "doc_stage", "created_date"
                 ],
                 template=prompt_text
