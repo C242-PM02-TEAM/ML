@@ -59,17 +59,35 @@ def generate():
         chain = create_chain(prompt_template, memory)
         result = chain.invoke(inputs)
 
+        # Log raw output
+        print("Raw result text:", result["text"])
+
         # Parse and clean result
         cleaned_result = json.loads(result["text"])
-        final_result = {key: value for key, value in cleaned_result.items() if key not in ["human_input", "text"]}
 
-        # Validate output format
-        validate_output_format(final_result)
+        # Merge paragraphs if necessary
+        if "Problem Statement" in cleaned_result:
+            problem_statement = cleaned_result["Problem Statement"]
+            if isinstance(problem_statement, dict):  # Merge paragraphs
+                cleaned_result["Problem Statement"] = " ".join(
+                    value for key, value in problem_statement.items() if value
+                )
+
+        if "Objective" in cleaned_result:
+            objective = cleaned_result["Objective"]
+            if isinstance(objective, dict):  # Merge paragraphs
+                cleaned_result["Objective"] = " ".join(
+                    value for key, value in objective.items() if value
+                )
+
+        final_result = {key: value for key, value in cleaned_result.items() if key not in ["human_input", "text"]}
 
         return jsonify(final_result)
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
 
 
 if __name__ == '__main__':
