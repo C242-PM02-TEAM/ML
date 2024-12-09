@@ -1,12 +1,13 @@
 import os
 import uuid
-from flask import Flask, request, jsonify, session
+from flask import Flask, request, jsonify, render_template, session
 from dotenv import load_dotenv
 
 from helpers import (
     get_or_create_memory,
     load_prompt_from_file,
-    create_chain
+    create_chain,
+    conversation_memories
 )
 
 # Load environment variables
@@ -22,14 +23,13 @@ def generate():
     try:
         # Get session ID or create a new one
         session_id = session.get('session_id', str(uuid.uuid4()))
-        session['session_id'] = session_id
-
+        
         # Get or create memory for this session
         memory = get_or_create_memory(session_id)
-
+        
         # Load prompt template from file
         prompt_template = load_prompt_from_file()
-
+        
         if not prompt_template:
             return jsonify({"error": "Prompt template could not be loaded"}), 400
 
@@ -47,8 +47,7 @@ def generate():
             "developer": data.get("developer", ""),
             "stakeholder": data.get("stakeholder", ""),
             "doc_stage": data.get("doc_stage", ""),
-            "created_date": data.get("created_date", ""),
-            "human_input": data.get("human_input", "")
+            "created_date": data.get("created_date", "")
         }
 
         # Create chain with memory and prompt
@@ -57,16 +56,17 @@ def generate():
         # Run the chain using invoke
         result = chain.invoke(inputs)
 
-        # Extract text from result if it's a HumanMessage or other non-serializable object
-        if isinstance(result, dict):
-            response_text = result.get('text', result)
-        else:
-            response_text = str(result)
-
-        return jsonify({"response": response_text}), 200
+        return jsonify(result)
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+
 
 
 
