@@ -35,7 +35,7 @@ def generate():
         session_id = session.get('session_id', str(uuid.uuid4()))
         memory = get_or_create_memory(session_id)
         prompt_template = load_prompt_from_file()
-        
+
         if not prompt_template:
             return jsonify({"error": "Prompt template could not be loaded"}), 400
 
@@ -59,26 +59,12 @@ def generate():
         chain = create_chain(prompt_template, memory)
         result = chain.invoke(inputs)
 
-        # Log raw output
-        print("Raw result text:", result["text"])
-
         # Parse and clean result
         cleaned_result = json.loads(result["text"])
 
-        # Merge paragraphs if necessary
-        if "Problem Statement" in cleaned_result:
-            problem_statement = cleaned_result["Problem Statement"]
-            if isinstance(problem_statement, dict):  # Merge paragraphs
-                cleaned_result["Problem Statement"] = " ".join(
-                    value for key, value in problem_statement.items() if value
-                )
-
-        if "Objective" in cleaned_result:
-            objective = cleaned_result["Objective"]
-            if isinstance(objective, dict):  # Merge paragraphs
-                cleaned_result["Objective"] = " ".join(
-                    value for key, value in objective.items() if value
-                )
+        # Ensure no extra data beyond overview
+        if "Overview" in cleaned_result:
+            cleaned_result["Overview"] = cleaned_result["Overview"].strip()
 
         final_result = {key: value for key, value in cleaned_result.items() if key not in ["human_input", "text"]}
 
@@ -86,6 +72,7 @@ def generate():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 
 

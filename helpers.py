@@ -58,24 +58,14 @@ def load_prompt_from_file():
         with open("prompts.txt", "r") as file:
             prompt_text = file.read().strip()
 
-            # Tambahkan instruksi eksplisit untuk struktur output
+            # Personas hanya untuk menegaskan konteks overview
             personas = """
-            Please generate a structured JSON response based on the following input data.
-            For each section (e.g., Problem Statement, Objective), provide the content in a single string without splitting into "Paragraph 1", "Paragraph 2", or similar.
-            Ensure the response includes:
-            - Metadata
-            - Overview
-            - Input Overview
-            - Problem Statement
-            - Objective
-            - DARCI Table
-            - Project Timeline
-            - Success Metrics
-            - User Stories
-            Make sure the response is valid JSON with double quotes for keys and values.
+            Ensure that the generated output strictly adheres to the context of the provided overview.
+            Do not include information or details that are unrelated to or extend beyond the overview.
             """
 
-            prompt_text = personas + "\n\n" + prompt_text
+            # Menggabungkan personas dengan prompt utama
+            full_prompt = personas + "\n\n" + prompt_text
 
             return PromptTemplate(
                 input_variables=[
@@ -83,10 +73,11 @@ def load_prompt_from_file():
                     "product_name", "document_owner", "developer",
                     "stakeholder", "doc_stage", "created_date"
                 ],
-                template=prompt_text
+                template=full_prompt
             )
     except FileNotFoundError:
         print("Error: File 'prompts.txt' not found.")
         return None
+
 
 
