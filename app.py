@@ -17,26 +17,31 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
+# Fungsi validasi JSON output
+def validate_output_format(output):
+    required_keys = [
+        "Metadata", "Overview", "Input Overview", "Problem Statement", 
+        "Objective", "DARCI Table", "Project Timeline", "Success Metrics", "User Stories"
+    ]
+    missing_keys = [key for key in required_keys if key not in output]
+    if missing_keys:
+        raise ValueError(f"Output JSON is missing required keys: {missing_keys}")
+    return True
+
 
 @app.route('/generate', methods=['POST'])
 def generate():
     try:
-        # Get session ID or create a new one
         session_id = session.get('session_id', str(uuid.uuid4()))
-        
-        # Get or create memory for this session
         memory = get_or_create_memory(session_id)
-        
-        # Load prompt template from file
         prompt_template = load_prompt_from_file()
         
         if not prompt_template:
             return jsonify({"error": "Prompt template could not be loaded"}), 400
 
-        # Get data from the request (data yang diterima dari frontend)
         data = request.json or {}
 
-        # Prepare the input data as a dictionary
+        # Prepare inputs
         inputs = {
             "overview": data.get("overview", ""),
             "start_date": data.get("start_date", ""),
@@ -50,20 +55,17 @@ def generate():
             "created_date": data.get("created_date", "")
         }
 
-        # Create chain with memory and prompt
+        # Generate result
         chain = create_chain(prompt_template, memory)
-
-        # Run the chain using invoke
         result = chain.invoke(inputs)
 
-        # Clean and restructure the result to match terminal output
-        cleaned_result = json.loads(result["text"])  # Convert text field to dict
-        # Ensure any extra keys like "human_input" and "text" are removed
-        final_result = {
-            key: value for key, value in cleaned_result.items() if key not in ["human_input", "text"]
-        }
+        # Parse and clean result
+        cleaned_result = json.loads(result["text"])
+        final_result = {key: value for key, value in cleaned_result.items() if key not in ["human_input", "text"]}
 
-        # Return the formatted JSON response
+        # Validate output format
+        validate_output_format(final_result)
+
         return jsonify(final_result)
 
     except Exception as e:

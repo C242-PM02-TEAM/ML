@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.memory import ConversationBufferMemory
-from langchain.chat_models import ChatOpenAI
+from langchain_community.chat_models import ChatOpenAI
 from langchain.callbacks import StreamingStdOutCallbackHandler
 from langsmith import Client
 from langchain.callbacks.tracers import LangChainTracer
@@ -58,12 +58,22 @@ def load_prompt_from_file():
         with open("prompts.txt", "r") as file:
             prompt_text = file.read().strip()
 
-            # Menambahkan instruksi "Personas" untuk memastikan fokus dalam konteks overview
+            # Tambahkan instruksi eksplisit untuk menjaga format output
             personas = """
-            Make sure all answers and outputs are directly related to the context of the overview provided. Avoid discussions that go outside the scope of the problem stated in the overview.
+            Please generate a structured JSON response based on the following input data.
+            Make sure the response includes:
+            - Metadata (Document Version, Product Name, Document Owner, Developer, Stakeholder, Document Stage, Created Date)
+            - Overview (Project Dates: Start Date and End Date)
+            - Input Overview
+            - Problem Statement
+            - Objective
+            - DARCI Table
+            - Project Timeline
+            - Success Metrics
+            - User Stories
+            Ensure the JSON structure matches the example output provided and all fields align with the input data.
             """
 
-            # Menggabungkan personas dengan template prompt yang ada
             prompt_text = personas + "\n\n" + prompt_text
 
             return PromptTemplate(
@@ -77,3 +87,4 @@ def load_prompt_from_file():
     except FileNotFoundError:
         print("Error: File 'prompts.txt' not found.")
         return None
+
