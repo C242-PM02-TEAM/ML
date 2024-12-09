@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.memory import ConversationBufferMemory
-from langchain_groq import ChatGroq
+from langchain.chat_models import ChatOpenAI
 from langchain.callbacks import StreamingStdOutCallbackHandler
 from langsmith import Client
 from langchain.callbacks.tracers import LangChainTracer
@@ -18,15 +18,16 @@ conversation_memories: Dict[str, ConversationBufferMemory] = {}
 
 # Initialize Langsmith client and tracer
 client = Client()
-tracer = LangChainTracer(project_name=os.getenv("LANGSMITH_PROJECT"))
+tracer = LangChainTracer(project_name=os.getenv("LANGCHAIN_PROJECT"))
 
 # Setup callback manager
 callback_manager = CallbackManager([StreamingStdOutCallbackHandler(), tracer])
 
-# Initialize Groq LLM with LangChain
-llm = ChatGroq(
-    groq_api_key=os.getenv("GROQ_API_KEY"),
-    model_name="llama3-70b-8192",
+# Initialize OpenAI LLM with LangChain
+llm = ChatOpenAI(
+    openai_api_key=os.getenv("OPENAI_API_KEY"),
+    model="gpt-4",  # Bisa disesuaikan, seperti "gpt-3.5-turbo" jika diinginkan
+    temperature=0.7,
     streaming=True,
     callback_manager=callback_manager
 )
