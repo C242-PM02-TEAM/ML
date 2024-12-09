@@ -33,27 +33,25 @@ def generate():
         if not prompt_template:
             return jsonify({"error": "Prompt template could not be loaded"}), 400
 
-        # Get data from the request
+        # Get data from the request (data yang diterima dari frontend)
         data = request.json or {}
-        human_input = data.get("human_input", "")  # Default to empty string if not provided
-
-        # Create chain with memory and prompt
-        chain = create_chain(prompt_template, memory)
 
         # Prepare the input data as a dictionary
         inputs = {
-            "human_input": human_input,
             "overview": data.get("overview", ""),
             "start_date": data.get("start_date", ""),
             "end_date": data.get("end_date", ""),
             "document_version": data.get("document_version", ""),
-            "product_name": data.get("product_name", ""),
+            "project_name": data.get("project_name", ""),
             "document_owner": data.get("document_owner", ""),
             "developer": data.get("developer", ""),
             "stakeholder": data.get("stakeholder", ""),
             "doc_stage": data.get("doc_stage", ""),
             "created_date": data.get("created_date", "")
         }
+
+        # Create chain with memory and prompt
+        chain = create_chain(prompt_template, memory)
 
         # Run the chain using invoke
         result = chain.invoke(inputs)
@@ -68,22 +66,7 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 
-@app.route('/clear_memory', methods=['POST'])
-def clear_memory():
-    """Clear memory for the current session."""
-    session_id = session.get('session_id')
-    if session_id in conversation_memories:
-        del conversation_memories[session_id]
-        return jsonify({"message": "Memory cleared successfully"})
-    return jsonify({"error": "No memory found for the session"}), 404
 
-@app.route('/get_history', methods=['GET'])
-def get_history():
-    """Retrieve the conversation history for the current session."""
-    session_id = session.get('session_id')
-    memory = get_or_create_memory(session_id)
-    history = memory.get_history()
-    return jsonify({"history": history})
 
 
 
