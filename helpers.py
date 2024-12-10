@@ -59,7 +59,7 @@ def load_prompt_from_file():
 
             # Menambahkan instruksi "Personas" untuk memastikan fokus dalam konteks overview
             personas = """
-            Make sure all answers and outputs are directly related to the context of the overview provided. Avoid discussions that go outside the scope of the problem stated in the overview.
+            Generate output just the JSON format without explaining that its in json format before json::
             """
 
             # Menggabungkan personas dengan template prompt yang ada

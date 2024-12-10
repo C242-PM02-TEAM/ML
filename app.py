@@ -2,7 +2,7 @@ import os
 import uuid
 from flask import Flask, request, jsonify, render_template, session
 from dotenv import load_dotenv
-
+from flask_cors import CORS
 from helpers import (
     get_or_create_memory,
     load_prompt_from_file,
@@ -16,6 +16,7 @@ load_dotenv()
 # Initialize Flask app
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+CORS(app)
 
 
 @app.route('/generate', methods=['POST'])
@@ -60,14 +61,6 @@ def generate():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
-
-
-
 
 
 if __name__ == '__main__':
