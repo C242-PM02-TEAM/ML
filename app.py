@@ -21,22 +21,23 @@ app.secret_key = os.urandom(24)
 @app.route('/generate', methods=['POST'])
 def generate():
     try:
-        # Get session ID or create a new one
+        # Ambil session_id atau buat yang baru
         session_id = session.get('session_id', str(uuid.uuid4()))
-        
-        # Get or create memory for this session
+        session['session_id'] = session_id  # Simpan session_id ke dalam session Flask
+
+        # Ambil atau buat memori untuk session ini
         memory = get_or_create_memory(session_id)
         
-        # Load prompt template from file
+        # Load template prompt dari file
         prompt_template = load_prompt_from_file()
         
         if not prompt_template:
             return jsonify({"error": "Prompt template could not be loaded"}), 400
 
-        # Get data from the request (data yang diterima dari frontend)
+        # Ambil data dari request JSON
         data = request.json or {}
 
-        # Prepare the input data as a dictionary
+        # Siapkan input data untuk prompt
         inputs = {
             "overview": data.get("overview", ""),
             "start_date": data.get("start_date", ""),
@@ -50,24 +51,16 @@ def generate():
             "created_date": data.get("created_date", "")
         }
 
-        # Create chain with memory and prompt
+        # Buat LangChain dengan memori dan prompt
         chain = create_chain(prompt_template, memory)
 
-        # Run the chain using invoke
+        # Jalankan chain dan dapatkan hasilnya
         result = chain.invoke(inputs)
 
         return jsonify(result)
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
-
-
-
 
 
 if __name__ == '__main__':
