@@ -2,20 +2,6 @@
 
 💡 Our Machine Learning member repository to build and generate for our PRDify Project
 
-## Features
-- **Session-based memory**: Retains conversation history per user session to provide context.
-- **Groq Integration**: Uses Groq's language model for generating PRD content based on input data.
-- **LangChain Framework**: Utilizes LangChain to handle prompt templates and memory management.
-- **Flexible Inputs**: Accepts various PRD-related data such as `overview`, `start_date`, `end_date`, etc.
-- **Environment configuration**: Supports configurable settings through environment variables.
-
-## Requirements
-To run this project, you'll need to install the dependencies listed in the `requirements.txt` file:
-
-```bash
-pip install -r requirements.txt
-```
-
 ## Installation and Setup
 
 1. **Clone the repository:**
