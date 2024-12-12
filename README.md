@@ -98,22 +98,6 @@ To test the `/generate` endpoint, you can use a tool like Postman.
 
 5. Hit the **Send** button to get the generated PRD response.
 
-#### Example Response:
-```json
-{
-  "overview": "This is a PRD for a Tracking App.",
-  "start_date": "2024-12-29",
-  "end_date": "2025-05-03",
-  "document_version": "v2.0",
-  "product_name": "Tracking Online",
-  "document_owner": "Jhon",
-  "developer": "Charles, Joni, King",
-  "stakeholder": "Adira Ltd.",
-  "doc_stage": "Drafting",
-  "created_date": "2024-12-01"
-}
-```
-
 ## Environment Variables
 
 ### Required
